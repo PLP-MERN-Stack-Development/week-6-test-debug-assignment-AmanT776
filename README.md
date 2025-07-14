@@ -69,6 +69,70 @@ mern-testing/
 - Cypress/Playwright: End-to-end testing framework
 - MongoDB Memory Server: In-memory MongoDB for testing
 
+## Testing Strategy
+
+This project uses a comprehensive, layered testing strategy to ensure reliability and maintainability of the MERN stack application. The approach includes unit, integration, and end-to-end (E2E) testing, as well as debugging tools and techniques.
+
+### 1. Unit Testing
+- **Client:**
+  - Uses **Jest** and **React Testing Library** to test React components, utility functions, and (if present) Redux logic and custom hooks.
+  - Example: `Button.test.jsx` tests all props, variants, and event handlers of the Button component.
+  - Custom Jest matchers from `@testing-library/jest-dom` are configured in a Jest setup file.
+- **Server:**
+  - Uses **Jest** to test utility functions and Express middleware in isolation.
+  - Unit tests are located in `client/src/tests/unit/` and `server/tests/unit/`.
+- **Coverage:**
+  - Aim for at least 70% code coverage for all critical code paths. Run `pnpm test:unit` or `npm run test:unit` to view coverage reports.
+
+### 2. Integration Testing
+- **Server:**
+  - Uses **Supertest** and **mongodb-memory-server** to test API endpoints and database operations in isolation from the production database.
+  - Example: `posts.test.js` covers CRUD operations, authentication, and validation for the `/api/posts` endpoint.
+  - Integration tests are located in `server/tests/integration/`.
+- **Client:**
+  - (If applicable) Integration tests for React components that interact with APIs or global state.
+
+### 3. End-to-End (E2E) Testing
+- **Cypress:**
+  - Used for simulating real user flows in the browser (e.g., visiting the home page, checking for UI elements).
+  - E2E tests are located in `client/cypress/e2e/`.
+  - Example: `smoke.cy.js` verifies the home page loads and displays the expected content.
+- **Playwright:**
+  - Alternative E2E framework for cross-browser testing.
+  - Example: `tests/home.spec.js` checks the home page renders correctly.
+
+### 4. Debugging Techniques
+- **Server-side logging:**
+  - Uses `morgan` for HTTP request logging and custom middleware for performance monitoring (logs request duration).
+  - Global error handler logs all server errors.
+- **Client-side error boundaries:**
+  - `ErrorBoundary` React component wraps the app to catch and display UI errors.
+- **Performance monitoring:**
+  - Request duration is logged for each API call on the server.
+- **Browser dev tools:**
+  - Recommended for manual debugging of client-side issues.
+
+### 5. Running Tests
+- **Unit tests:**
+  - `pnpm test:unit` or `npm run test:unit` (client and server)
+- **Integration tests:**
+  - `pnpm test:integration` or `npm run test:integration` (server)
+- **E2E tests:**
+  - `pnpm exec cypress run --e2e` (client)
+  - `pnpm exec playwright test` (client)
+
+### 6. Coverage & Reporting
+- Coverage reports are generated for unit tests. Review them to ensure all critical logic is tested.
+- Screenshots and videos (from Cypress/Playwright) can be used to document E2E test results.
+
+### 7. Best Practices
+- Write small, focused tests for each function/component.
+- Use mocks/stubs for external dependencies in unit tests.
+- Use in-memory databases for integration tests to avoid polluting production data.
+- Automate tests in CI/CD pipelines for continuous reliability.
+
+---
+
 ## Submission
 
 Your work will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
